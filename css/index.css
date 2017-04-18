@@ -1,0 +1,109 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+dl,
+dd {
+  margin: 0;
+  /* 移动端样式 */
+  -webkit-text-size-adjust: 100%;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+img {
+  display: block;
+}
+a {
+  text-decoration: none;
+}
+a,
+input,
+button {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-appearance: none;
+}
+html,
+body {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.wrap {
+  height: 100%;
+  overflow: auto;
+}
+#header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.headerC {
+  height: 2rem;
+}
+#logo {
+  float: left;
+  padding: 0.38518519rem 0.25185185rem 0.31111111rem;
+}
+#logo img {
+  width: 3.55555556rem;
+}
+#menuBtn {
+  float: left;
+  width: 1.91111111rem;
+  height: 2rem;
+  background: url("../img/menuBtn.png") no-repeat;
+  background-size: 1.21481481rem 3.45185185rem;
+}
+.menuClose {
+  background-position: center 0.23703704rem !important;
+}
+.menuShow {
+  background-position: center -1.74814815rem !important;
+}
+#button {
+  float: right;
+  padding-top: 0.41481481rem;
+}
+#button a {
+  float: left;
+  margin-right: 0.22222222rem;
+  width: 1.64444444rem;
+  height: 1.15555556rem;
+  line-height: 1.15555556rem;
+  font-size: 0.59259259rem;
+  color: #ccc;
+  text-align: center;
+  background-color: #690;
+  border-radius: 3px;
+}
+#button .searchBtn {
+  width: 1.92592593rem;
+  height: 1.3037037rem;
+  line-height: 1.3037037rem;
+  margin-right: 0.44444444rem;
+  font-weight: bold;
+  color: #fff;
+}
+.search {
+  height: 2rem;
+  padding: 0.23703704rem;
+}
+.search input[type='search'] {
+  float: left;
+  width: 12.28148148rem;
+  height: 1.52592593rem;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border: 1px solid #5a5a5a;
+  background-color: #999;
+}
