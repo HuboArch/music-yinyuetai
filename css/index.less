@@ -28,6 +28,7 @@ input,
 button {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-appearance: none;
+  outline: none;
 }
 
 html,
@@ -35,6 +36,7 @@ body {
   position: relative;
   height: 100%;
   overflow: hidden;
+  background-color: #eee;
 }
 
 .wrap {
@@ -47,7 +49,7 @@ body {
   left: 0;
   top: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, .8);
 }
 
 .headerC {
@@ -107,23 +109,96 @@ body {
 }
 
 .search {
-  height: 135/@rem;
+  height: 96/@rem;
   padding: 16/@rem;
 }
 
-.search input[type='search'] {
+.search input[type='text'] {
   float: left;
   width: 829/@rem;
   height: 103/@rem;
   padding: 5px 10px;
+  font-size: .6rem;
   box-sizing: border-box;
   border: 1px solid #5a5a5a;
   background-color: #999;
+  color: #333;
+  border-top-left-radius: 15/@rem;
+  border-bottom-left-radius: 15/@rem;
 }
 
+.search input[type='text']:focus {
+  background-color: #fff;
+}
 
+.search input[type='text']::-webkit-input-placeholder {
+  color: #eee;
+}
 
+.search input[type='submit'] {
+  float: right;
+  width: 203/@rem;
+  height: 103/@rem;
+  font-size: 52/@rem;
+  color: #fff;
+  background-color: #414040;
+  border: none;
+  border-top-right-radius: 15/@rem;
+  border-bottom-right-radius: 15/@rem;
+}
 
+#nav {
+  display: none;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 135/@rem;
+  padding: 10/@rem 0;
+  border-top: 1px solid #414040;
+  background-color: rgba(0, 0, 0, .8);
+}
+
+#nav li {
+  float: left;
+  width: 22.5%;
+  line-height: 2rem;
+  font-size: .8rem;
+  text-align: center;
+}
+
+#nav li a {
+  color: #fff;
+}
+
+.content {
+  padding-top: 4rem;
+}
+
+#navScroll {
+  width: 100%;
+  height: 177/@rem;
+  padding: 31/@rem 0 14/@rem;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#navs {
+  height: 129/@rem;
+  white-space: nowrap;
+  font-size: 0;
+}
+
+#navs li {
+  display: inline-block;
+  padding: 0 38/@rem;
+  line-height: 129/@rem;
+  font-size: 60/@rem;
+}
+
+#navs li a {
+  color: #020202;
+}
 
 
 
