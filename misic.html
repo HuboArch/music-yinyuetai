@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>music</title>
     <link rel="stylesheet" href="css/index.css">
+    <script src="js/cssTransform.js"></script>
     <script>
         setRem();
         function setRem() {
@@ -22,7 +23,7 @@
     <header id="header">
         <div class="headerC">
             <h1 id="logo"><a href="javascript:;"><img src="img/logo.png" alt=""></a></h1>
-            <a href="" id="menuBtn" class="menuShow"></a>
+            <a href="javascript:void(0);" id="menuBtn" class="menuClose"></a>
             <nav id="button">
                 <a href="javascript:;" class="searchBtn">搜索</a>
                 <a href="javascript:;">登录</a>
@@ -51,7 +52,7 @@
     <div class="content">
         <nav id="navScroll">
             <ul id="navs">
-                <li><a href="javascript:void(0);">首页</a></li>
+                <li class="active"><a href="javascript:void(0);">首页</a></li>
                 <li><a href="javascript:void(0);">MV</a></li>
                 <li><a href="javascript:void(0);">悦单</a></li>
                 <li><a href="javascript:void(0);">V榜</a></li>
@@ -65,7 +66,151 @@
                 <li><a href="javascript:void(0);">客服</a></li>
             </ul>
         </nav>
+
+        <div id="picTab">
+            <ul id="picList">
+                <li><a href="#"><img src="img/img3.jpg" alt=""></a></li>
+                <li><a href="#"><img src="img/img1.jpg" alt=""></a></li>
+                <li><a href="#"><img src="img/img2.jpg" alt=""></a></li>
+                <li><a href="#"><img src="img/img3.jpg" alt=""></a></li>
+                <li><a href="#"><img src="img/img1.jpg" alt=""></a></li>
+            </ul>
+            <div id="picNav">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </div>
 </section>
+<script>
+    navShow()
+    function navShow() {
+        var menuBtn = document.querySelector('#menuBtn')
+        var nav = document.querySelector('#nav')
+
+        menuBtn.addEventListener('touchstart', function (event) {
+            if (this.className === 'menuClose') {
+                this.className = 'menuShow'
+                nav.style.display = 'block'
+            } else {
+                this.className = 'menuClose'
+                nav.style.display = 'none'
+            }
+
+            event.stopPropagation()
+        })
+
+        nav.addEventListener('touchstart', function (event) {
+            event.stopPropagation()
+        })
+
+        document.addEventListener('touchstart', function () {
+            if (menuBtn.className === 'menuShow') {
+                menuBtn.className = 'menuClose'
+                nav.style.display = 'none'
+            }
+        })
+    }
+
+    // 轮播图开始
+    scrollPic()
+    function scrollPic() {
+        let wrapper = document.querySelector('#picTab')
+        let list = document.querySelector('#picList')
+        let li = list.querySelectorAll('li')
+        let picNav = document.querySelector('#picNav')
+        let span = picNav.querySelectorAll('span')
+        // 记录触摸点开始结束的位置
+        let touchStart = 0
+        let touchEnd = 0
+        // 记录list 初始的offsetLeft
+        let start = 0
+        // 手指滑动的方向
+        let direction = ''
+        let delay
+        // 记录圆点索引
+        let index = 0
+        // 记录左侧隐藏区域的图片个数
+        let hiddenPic = -1
+        // 手指在水平方向上的移动距离
+        let horiDistance = 0
+
+        // 设置容器的宽高
+        wrapper.style.height = li[0].offsetHeight + 'px'
+        list.style.width = li.length + '00%'
+
+        for (let i = 0; i < li.length; i++) {
+            li[i].style.width = (1 / li.length) * 100 + '%'
+        }
+
+        // 单个展示图片的宽度
+        let uWidth = li[0].offsetWidth
+
+        // 左右两侧增加图片，向左移动一格图片
+        cssTransform(list, 'translateX', -uWidth)
+
+        // 手指触碰到屏幕时
+        wrapper.addEventListener('touchstart', function (ev) {
+            let touch = ev.changedTouches[0]
+
+            horiDistance = 0
+
+            // 无缝滑动
+            if (hiddenPic === 1 - li.length) {
+                list.style.WebkitTransition = list.style.transition = ''
+                cssTransform(list, 'translateX', -1 * uWidth)
+            }
+
+            if (hiddenPic === 0) {
+                list.style.WebkitTransition = list.style.transition = ''
+                cssTransform(list, 'translateX', (2 - li.length) * uWidth)
+            }
+
+            touchStart = touch.pageX
+            start = cssTransform(list, 'translateX')
+        }, false)
+
+        // 手指水平移动时
+        wrapper.addEventListener('touchmove', function (ev) {
+            let touch = ev.changedTouches[0]
+            let left
+
+            list.style.WebkitTransition = list.style.transition = ''
+
+            touchEnd = touch.pageX
+            horiDistance = touchEnd - touchStart
+            // 判断手指滑动的方向
+            direction = horiDistance > 0 ? 'right' : 'left'
+
+            cssTransform(list, 'translateX', horiDistance + start)
+        })
+
+        wrapper.addEventListener('touchend', function (ev) {
+            // 手指离开屏幕时，list 的translateX
+            let leaveTranslateX = cssTransform(list, 'translateX')
+
+            hiddenPic = direction === 'left' ? Math.round(leaveTranslateX / uWidth - 0.3)
+                : Math.round(leaveTranslateX / uWidth + 0.3)
+
+            list.style.WebkitTransition = list.style.transition = 'transform 500ms linear'
+
+            cssTransform(list, 'translateX', hiddenPic * uWidth)
+
+            // 索引圆点跟随效果
+            if (horiDistance) {
+                index++
+                index %= li.length - 2
+                for (let i = 0; i < span.length; i++) {
+                    span[i].className = ''
+
+                }
+                span[index].className = 'active'
+            }
+
+        })
+    }
+    // 轮播图结束
+</script>
 </body>
 </html>

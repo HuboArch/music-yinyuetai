@@ -139,6 +139,7 @@ body {
   padding: 0.14814815rem 0;
   border-top: 1px solid #414040;
   background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10;
 }
 #nav li {
   float: left;
@@ -174,4 +175,47 @@ body {
 }
 #navs li a {
   color: #020202;
+}
+#navs .active {
+  background-color: #690;
+}
+#navs .active a {
+  color: #fff;
+}
+#picTab {
+  position: relative;
+  overflow: hidden;
+}
+#picList {
+  width: 500%;
+}
+#picList li {
+  width: 20%;
+}
+#picList img {
+  width: 100%;
+}
+#picList li {
+  float: left;
+}
+#picList img {
+  display: block;
+  width: 100%;
+}
+#picNav {
+  position: absolute;
+  left: 40%;
+  bottom: 5px;
+  width: 100%;
+  line-height: 10px;
+}
+#picNav span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: purple;
+  border-radius: 5px;
+}
+#picNav .active {
+  background-color: coral;
 }
