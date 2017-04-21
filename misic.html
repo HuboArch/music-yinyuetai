@@ -122,8 +122,11 @@
         let picNav = document.querySelector('#picNav')
         let span = picNav.querySelectorAll('span')
         // 记录触摸点开始结束的位置
-        let touchStart = 0
-        let touchEnd = 0
+        /*let touchStart = 0
+         let touchEnd = 0*/
+        let startPoint = null
+//        let endPoint = null
+        let horiStartPageX = 0
         // 记录list 初始的offsetLeft
         let start = 0
         // 手指滑动的方向
@@ -135,6 +138,8 @@
         let hiddenPic = -1
         // 手指在水平方向上的移动距离
         let horiDistance = 0
+        let isMove = false
+        let isFirst = true
 
         // 设置容器的宽高
         wrapper.style.height = li[0].offsetHeight + 'px'
@@ -152,7 +157,7 @@
 
         // 手指触碰到屏幕时
         wrapper.addEventListener('touchstart', function (ev) {
-            let touch = ev.changedTouches[0]
+            startPoint = ev.changedTouches[0]
 
             horiDistance = 0
 
@@ -167,23 +172,39 @@
                 cssTransform(list, 'translateX', (2 - li.length) * uWidth)
             }
 
-            touchStart = touch.pageX
+            horiStartPageX = startPoint.pageX
             start = cssTransform(list, 'translateX')
+            isMove = true
+            isFirst = true
         }, false)
 
         // 手指水平移动时
         wrapper.addEventListener('touchmove', function (ev) {
-            let touch = ev.changedTouches[0]
-            let left
+            if (!isMove) return
+
+            let endPoint = ev.changedTouches[0]
+            let horiEndPageX = 0
+            let directionX = Math.abs(endPoint.pageX - startPoint.pageX)
+            let directionY = Math.abs(endPoint.pageY - startPoint.pageY)
 
             list.style.WebkitTransition = list.style.transition = ''
 
-            touchEnd = touch.pageX
-            horiDistance = touchEnd - touchStart
+            horiEndPageX = endPoint.pageX
+            horiDistance = horiEndPageX - horiStartPageX
             // 判断手指滑动的方向
             direction = horiDistance > 0 ? 'right' : 'left'
+            console.log('directionX: ' + directionX + ':' + 'directionY ' + directionY)
+            // 判断手势是横向还是纵向
+            if (isFirst) {
+                isFirst = false
+                if (directionX <= directionY) {
+                    isMove = false
+                }
+            }
 
-            cssTransform(list, 'translateX', horiDistance + start)
+            if (isMove) {
+                cssTransform(list, 'translateX', horiDistance + start)
+            }
         })
 
         wrapper.addEventListener('touchend', function (ev) {
