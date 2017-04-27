@@ -84,6 +84,7 @@
     </div>
 </section>
 <script>
+    // 栏目导航显示隐藏开始
     navShow()
     function navShow() {
         var menuBtn = document.querySelector('#menuBtn')
@@ -112,6 +113,7 @@
             }
         })
     }
+    // 栏目导航显示隐藏结束
 
     // 轮播图开始
     scrollPic()
@@ -125,7 +127,7 @@
         /*let touchStart = 0
          let touchEnd = 0*/
         let startPoint = null
-//        let endPoint = null
+        //  let endPoint = null
         let horiStartPageX = 0
         // 记录list 初始的offsetLeft
         let start = 0
@@ -159,8 +161,6 @@
         wrapper.addEventListener('touchstart', function (ev) {
             startPoint = ev.changedTouches[0]
 
-            horiDistance = 0
-
             // 无缝滑动
             if (hiddenPic === 1 - li.length) {
                 list.style.WebkitTransition = list.style.transition = ''
@@ -191,9 +191,6 @@
 
             horiEndPageX = endPoint.pageX
             horiDistance = horiEndPageX - horiStartPageX
-            // 判断手指滑动的方向
-            direction = horiDistance > 0 ? 'right' : 'left'
-            console.log('directionX: ' + directionX + ':' + 'directionY ' + directionY)
             // 判断手势是横向还是纵向
             if (isFirst) {
                 isFirst = false
@@ -211,27 +208,72 @@
             // 手指离开屏幕时，list 的translateX
             let leaveTranslateX = cssTransform(list, 'translateX')
 
-            hiddenPic = direction === 'left' ? Math.round(leaveTranslateX / uWidth - 0.3)
-                : Math.round(leaveTranslateX / uWidth + 0.3)
+            for (let i = 0; i < span.length; i++) {
+                span[i].className = ''
+            }
+
+            if (horiDistance < 0) {
+                hiddenPic = Math.round(leaveTranslateX / uWidth - 0.3)
+            } else {
+                hiddenPic = Math.round(leaveTranslateX / uWidth + 0.3)
+            }
 
             list.style.WebkitTransition = list.style.transition = 'transform 500ms linear'
 
             cssTransform(list, 'translateX', hiddenPic * uWidth)
 
-            // 索引圆点跟随效果
-            if (horiDistance) {
-                index++
-                index %= li.length - 2
-                for (let i = 0; i < span.length; i++) {
-                    span[i].className = ''
-
-                }
-                span[index].className = 'active'
-            }
-
         })
     }
     // 轮播图结束
+
+    // 滑动导航开始
+    navSwipe()
+    function navSwipe() {
+
+        var navScroll = document.querySelector('#navScroll')
+        var navs = document.querySelector('#navs')
+        var navsLi = navs.querySelectorAll('li')
+        var navsOffsetWidth = 0
+        // navs 的起始位移值
+        var offsetX = 0
+        // 手指触摸屏幕的起始水平坐标
+        var touchStartX = 0
+        // 手指在屏幕上滑动时的水平坐标
+        var touchMoveX = 0
+
+        navsLi.forEach(function (item) {
+            navsOffsetWidth += item.offsetWidth
+        })
+
+        navs.addEventListener('touchstart', function (event) {
+            var touch = event.changedTouches[0]
+
+            offsetX = cssTransform(navs, 'translateX')
+            touchStartX = touch.pageX
+        })
+
+        navs.addEventListener('touchmove', function (event) {
+            var touch = event.changedTouches[0]
+            var horiMoveDistance = 0
+            var left = 0
+
+            touchMoveX = touch.pageX
+            horiMoveDistance = touchMoveX - touchStartX
+            left = offsetX + horiMoveDistance
+
+            if (left > 0) {
+                left = 0
+            }
+            if (left < navScroll.clientWidth - navsOffsetWidth) {
+                left = navScroll.clientWidth - navsOffsetWidth
+            }
+
+            cssTransform(navs, 'translateX', left)
+        })
+    }
+
+
+    // 滑动导航结束
 </script>
 </body>
 </html>
