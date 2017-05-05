@@ -256,19 +256,34 @@
             var touch = event.changedTouches[0]
             var horiMoveDistance = 0
             var left = 0
+            // 递减系数
+            var decreaseRatio = 0
+            // navs向左滑动，当其右侧与navscroll右侧对齐时候，自身最小的translateX值
+            var minTranslateX = navScroll.clientWidth - navsOffsetWidth
+            // navs达到最小的translateX后，继续向左移动，超出部分的值
+            var over = 0
 
             touchMoveX = touch.pageX
             horiMoveDistance = touchMoveX - touchStartX
             left = offsetX + horiMoveDistance
 
             if (left > 0) {
-                left = 0
+                // 50的存在是为了减少decreaseRatio
+                decreaseRatio = 1 - (left + 50) / (navScroll.clientWidth + 50)
+                left = parseInt(left * decreaseRatio)
             }
-            if (left < navScroll.clientWidth - navsOffsetWidth) {
-                left = navScroll.clientWidth - navsOffsetWidth
+            if (left < minTranslateX) {
+                over = minTranslateX - left
+                decreaseRatio = 1 - (over + 50) / (navScroll.clientWidth + 50)
+                over = parseInt(over * decreaseRatio)
+                left = minTranslateX - over
             }
-
             cssTransform(navs, 'translateX', left)
+        })
+
+        navs.addEventListener('touchend', function (event) {
+            navs.style.WebkitTransition = navs.style.transition = 'all 100ms ease'
+            cssTransform(navs, 'translateX', 50)
         })
     }
 
