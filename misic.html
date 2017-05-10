@@ -243,34 +243,39 @@
         // 惯性滑动
         var lastX = 0
         var lastTime = 0
-        var lastXInterval = 0
-        var lastTimeInterval = 0
+        var XInterval = 0
+        var timeInterval = 0
 
         navsLi.forEach(function (item) {
             navsOffsetWidth += item.offsetWidth
         })
+        // navs向左滑动，当其右侧与navscroll右侧对齐时候，自身最小的translateX值
+        var minTranslateX = navScroll.clientWidth - navsOffsetWidth
 
+        // touchstart
         navs.addEventListener('touchstart', function (event) {
             var touch = event.changedTouches[0]
 
             navs.style.WebkitTransition = navs.style.transition = ''
             offsetX = cssTransform(navs, 'translateX')
             touchStartX = touch.pageX
+
+            lastX = offsetX
+            lastTime = new Date().getTime()
+            XInterval = 0
+            timeInterval = 0
         })
 
+        // touchmove
         navs.addEventListener('touchmove', function (event) {
             var touch = event.changedTouches[0]
             var horiMoveDistance = 0
             var left = 0
             // 递减系数
             var decreaseRatio = 0
-            // navs向左滑动，当其右侧与navscroll右侧对齐时候，自身最小的translateX值
-            var minTranslateX = navScroll.clientWidth - navsOffsetWidth
             // navs达到最小的translateX后，继续向左移动，超出部分的值
             var over = 0
-
-            startTime = new Date().getTime()
-            startPos = cssTransform(navs, 'translateX')
+            var nowTime = new Date().getTime()
 
             touchMoveX = touch.pageX
             horiMoveDistance = touchMoveX - touchStartX
@@ -287,14 +292,38 @@
                 over = parseInt(over * decreaseRatio)
                 left = minTranslateX - over
             }
+
+            // inertia slide
+            XInterval = left - lastX
+            timeInterval = nowTime - lastTime
+            lastX = left
+            lastTime = nowTime
+
             cssTransform(navs, 'translateX', left)
         })
 
+        // touchend
         navs.addEventListener('touchend', function (event) {
             var slideDis = cssTransform(navs, 'translateX')
+            var speed = 0
+            var target = 0
+
+            if (timeInterval) {
+                speed = XInterval / timeInterval
+                target = slideDis + speed * 150
+            } else {
+                return
+            }
+
+            if (target > 0) {
+                target = 0
+            }
+            if (target < minTranslateX) {
+                target = minTranslateX
+            }
 
             navs.style.WebkitTransition = navs.style.transition = 'all 300ms linear'
-            cssTransform(navs, 'translateX', slideDis + 10)
+            cssTransform(navs, 'translateX', target)
         })
     }
 
