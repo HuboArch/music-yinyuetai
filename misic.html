@@ -240,6 +240,11 @@
         var touchStartX = 0
         // 手指在屏幕上滑动时的水平坐标
         var touchMoveX = 0
+        // 惯性滑动
+        var lastX = 0
+        var lastTime = 0
+        var lastXInterval = 0
+        var lastTimeInterval = 0
 
         navsLi.forEach(function (item) {
             navsOffsetWidth += item.offsetWidth
@@ -248,6 +253,7 @@
         navs.addEventListener('touchstart', function (event) {
             var touch = event.changedTouches[0]
 
+            navs.style.WebkitTransition = navs.style.transition = ''
             offsetX = cssTransform(navs, 'translateX')
             touchStartX = touch.pageX
         })
@@ -262,6 +268,9 @@
             var minTranslateX = navScroll.clientWidth - navsOffsetWidth
             // navs达到最小的translateX后，继续向左移动，超出部分的值
             var over = 0
+
+            startTime = new Date().getTime()
+            startPos = cssTransform(navs, 'translateX')
 
             touchMoveX = touch.pageX
             horiMoveDistance = touchMoveX - touchStartX
@@ -282,8 +291,10 @@
         })
 
         navs.addEventListener('touchend', function (event) {
-            navs.style.WebkitTransition = navs.style.transition = 'all 100ms ease'
-            cssTransform(navs, 'translateX', 50)
+            var slideDis = cssTransform(navs, 'translateX')
+
+            navs.style.WebkitTransition = navs.style.transition = 'all 300ms linear'
+            cssTransform(navs, 'translateX', slideDis + 10)
         })
     }
 
