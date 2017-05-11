@@ -39,7 +39,7 @@ function cssTransform(el, attr, val) {
     } else if (arguments.length === 2) {
         // 两个参数获取DOM元素transform属性
         if (el.transform[attr] === undefined) {
-            return attr === 'scale' || 'scaleX' || 'scaleY' ? 1 : 0;
+            return attr === ('scale' || 'scaleX' || 'scaleY') ? 1 : 0;
         } else {
             return el.transform[attr];
         }

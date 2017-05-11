@@ -294,9 +294,10 @@
             }
 
             // inertia slide
-            XInterval = left - lastX
+            XInterval = horiMoveDistance - lastX
             timeInterval = nowTime - lastTime
-            lastX = left
+            console.log(timeInterval)
+            lastX = horiMoveDistance
             lastTime = nowTime
 
             cssTransform(navs, 'translateX', left)
@@ -307,19 +308,25 @@
             var slideDis = cssTransform(navs, 'translateX')
             var speed = 0
             var target = 0
+            var type = 'cubic-bezier(.34, .92, .58, .9)'
+            var time = 0
 
             if (timeInterval) {
                 speed = XInterval / timeInterval
                 target = slideDis + speed * 80
+                time = Math.abs(speed * 120)
+                time = time < 300 ? 300 : time
 
                 if (target > 0) {
                     target = 0
+                    type = 'cubic-bezier(.08, 1.44, .6, 1.46)'
                 }
                 if (target < minTranslateX) {
                     target = minTranslateX
+                    type = 'cubic-bezier(.08, 1.44, .6, 1.46)'
                 }
 
-                navs.style.WebkitTransition = navs.style.transition = 'all 300ms linear'
+                navs.style.WebkitTransition = navs.style.transition = 'all ' + time + 'ms ' + type
                 cssTransform(navs, 'translateX', target)
             }
 
