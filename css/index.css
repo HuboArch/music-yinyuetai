@@ -263,4 +263,28 @@ body {
   float: left;
   width: 33.33333%;
 }
+.tabList li {
+  float: left;
+  width: 7.5rem;
+  margin: .12rem;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: .6rem;
+  background-color: #efefef;
+}
+.tabList a {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000;
+}
+.tabList img {
+  width: 100%;
+}
+.tabList .tabNext {
+  font-size: 100px;
+  text-align: center;
+  opacity: 0;
+}
 /* font boosting 移动端字体自动变大 解决方法：包含元素设置高度，若包含元素不能设置高度，则设置 max-height：10000px */

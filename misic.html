@@ -67,6 +67,7 @@
             </ul>
         </nav>
 
+        <!-- SLIDE START -->
         <div id="picTab">
             <ul id="picList">
                 <li><a href="#"><img src="img/img3.jpg" alt=""></a></li>
@@ -81,6 +82,9 @@
                 <span></span>
             </div>
         </div>
+        <!-- SLIDE END -->
+
+        <!-- TAB START -->
         <section class="tab">
             <header class="tabHeader">
                 <h2>MV首播</h2>
@@ -138,10 +142,12 @@
                 <ul class="tabNext">loading...</ul>
             </section>
         </section>
+        <!-- TAB END -->
+
     </div>
 </section>
 <script>
-    // 栏目导航显示隐藏开始
+    // button nav START
     navShow()
     function navShow() {
         var menuBtn = document.querySelector('#menuBtn')
@@ -170,9 +176,9 @@
             }
         })
     }
-    // 栏目导航显示隐藏结束
+    // button nav END
 
-    // 轮播图开始
+    // slide START
     scrollPic()
     function scrollPic() {
         let wrapper = document.querySelector('#picTab')
@@ -281,9 +287,9 @@
 
         })
     }
-    // 轮播图结束
+    // slide END
 
-    // 滑动导航开始
+    // swiping navigation START
     navSwipe()
     function navSwipe() {
 
@@ -390,8 +396,7 @@
         })
     }
 
-
-    // 滑动导航结束
+    // swiping navigation END
 </script>
 </body>
 </html>
