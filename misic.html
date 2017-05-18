@@ -100,7 +100,7 @@
                 <span></span>
             </nav>
             <section class="tabList">
-                <ul class="tabPrev">loading...</ul>
+                <ul class="tabNext">loading...</ul>
                 <ul class="tabShow">
                     <li>
                         <a href="#">
@@ -147,7 +147,7 @@
     </div>
 </section>
 <script>
-    // button nav START
+    /* button nav ****START****/
     navShow()
     function navShow() {
         var menuBtn = document.querySelector('#menuBtn')
@@ -176,9 +176,9 @@
             }
         })
     }
-    // button nav END
+    /* button nav ****END****/
 
-    // slide START
+    /* slide ****START****/
     scrollPic()
     function scrollPic() {
         let wrapper = document.querySelector('#picTab')
@@ -187,8 +187,6 @@
         let picNav = document.querySelector('#picNav')
         let span = picNav.querySelectorAll('span')
         // 记录触摸点开始结束的位置
-        /*let touchStart = 0
-         let touchEnd = 0*/
         let startPoint = null
         //  let endPoint = null
         let horiStartPageX = 0
@@ -287,9 +285,9 @@
 
         })
     }
-    // slide END
+    /* slide ****END****/
 
-    // swiping navigation START
+    /* swiping nav ****START****/
     navSwipe()
     function navSwipe() {
 
@@ -396,7 +394,38 @@
         })
     }
 
-    // swiping navigation END
+    /* swiping nav ****END****/
+
+    /* tab ****START****/
+    tab()
+    function tab() {
+        let tabList = document.querySelectorAll('.tabList')
+        let tabNav = document.querySelectorAll('.tabNav')
+        let tabShow = document.querySelectorAll('.tabShow')
+        let width = tabShow.offsetWidth
+
+        for (let i = 0; i < tabNav.length; i++) {
+            swipe(tabNav[i], tabList[i])
+        }
+
+        function swipe(tab, list) {
+            cssTransform(list, 'translateX', -width)
+
+            let startPoint = 0
+            let startX = 0
+            // switch
+            let isMove = true
+            let isFirst = true
+            let isLoad = false
+
+            let next = document.querySelectorAll('.tabNext')
+
+            // touchstart event
+        }
+    }
+
+
+    /* tab ****END****/
 </script>
 </body>
 </html>
