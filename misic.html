@@ -402,7 +402,7 @@
         let tabList = document.querySelectorAll('.tabList')
         let tabNav = document.querySelectorAll('.tabNav')
         let tabShow = document.querySelectorAll('.tabShow')
-        let width = tabShow.offsetWidth
+        let width = tabShow[0].offsetWidth
 
         for (let i = 0; i < tabNav.length; i++) {
             swipe(tabNav[i], tabList[i])
@@ -421,6 +421,83 @@
             let next = document.querySelectorAll('.tabNext')
 
             // touchstart event
+            list.addEventListener('touchstart', function (e) {
+                // ajax请求数据时，禁止滑动
+                if (isLoad) return
+
+                list.style.transition = ''
+                startPoint = e.changedTouches[0]
+                startX = cssTransform(list, 'translateX')
+
+                // 防止上下滑动时的横向滑动
+                isFirst = true
+                isMove = true
+            })
+
+            // touchmove event
+            list.addEventListener('touchmove', function (e) {
+                if (isLoad) return
+                if (!isMove) return
+
+                let nowPoint = e.changedTouches[0]
+                let disX = nowPoint.pageX - startPoint.pageX
+                let disY = nowPoint.pageY - startPoint.pageY
+
+                // isFirst 让判断滑动方向的语句只执行了一次，这是有必要的。因为当来回横向滑动时，disY 的绝对值是有可能大于 disX 的绝对值的
+                if (isFirst) {
+                    isFirst = false
+                    if (Math.abs(disY) > Math.abs(disX)) {
+                        isMove = false
+                    }
+                }
+
+                if (isMove) {
+                    cssTransform(list, 'translateX', startX + disX)
+                }
+
+                if (Math.abs(disX) > width / 2) {
+                    end(disX)
+                }
+            })
+
+            // touchend event
+            list.addEventListener('touchend', function () {
+
+            })
+
+            function end(disX) {
+                isLoad = true
+
+                let destination = disX > 0 ? 0 : -2 * width
+
+                list.style.transition = list.style.WebkitTransition = '500ms'
+                cssTransform(list, 'translateX', destination)
+
+                list.addEventListener('webkitTransitionEnd', transEnd)
+                list.addEventListener('transitionend', transEnd)
+            }
+            
+            function transEnd() {
+                list.removeEventListener('webkitTransitionEnd', transEnd)
+                list.removeEventListener('transitionend', transEnd)
+
+                next.forEach(function (node) {
+                    node.style.opacity = 1
+                })
+
+                setTimeout(function () {
+                    next.forEach(function (node) {
+                        node.style.opacity = 0
+                    })
+
+                    list.style.WebkitTransition = list.style.transition = ''
+                    cssTransform(list, 'translateX', -width)
+
+                    isLoad = false
+                }, 1000)
+            }
+            
+            
         }
     }
 
