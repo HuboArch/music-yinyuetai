@@ -144,6 +144,66 @@
         </section>
         <!-- TAB END -->
 
+        <!-- TAB START -->
+        <section class="tab">
+            <header class="tabHeader">
+                <h2>MV首播</h2>
+                <a href="#">更多</a>
+            </header>
+            <nav class="tabNav">
+                <a href="javascript:void(0);">全部</a>
+                <a href="javascript:void(0);">内地</a>
+                <a href="javascript:void(0);">港台</a>
+                <a href="javascript:void(0);">欧美</a>
+                <a href="javascript:void(0);">韩国</a>
+                <a href="javascript:void(0);">日本</a>
+                <span></span>
+            </nav>
+            <section class="tabList">
+                <ul class="tabNext">loading...</ul>
+                <ul class="tabShow">
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" alt="pic">
+                            <span>当我们混在一起 夏日版</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" alt="pic">
+                            <span>当我们混在一起 夏日版</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" alt="pic">
+                            <span>当我们混在一起 夏日版</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" alt="pic">
+                            <span>当我们混在一起 夏日版</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" alt="pic">
+                            <span>当我们混在一起 夏日版</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" alt="pic">
+                            <span>当我们混在一起 夏日版</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="tabNext">loading...</ul>
+            </section>
+        </section>
+        <!-- TAB END -->
+
     </div>
 </section>
 <script>
@@ -408,7 +468,7 @@
             swipe(tabNav[i], tabList[i])
         }
 
-        function swipe(tab, list) {
+        function swipe(nav, list) {
             cssTransform(list, 'translateX', -width)
 
             let startPoint = 0
@@ -418,7 +478,10 @@
             let isFirst = true
             let isLoad = false
 
-            let next = document.querySelectorAll('.tabNext')
+            // get DOMNode
+            let next = list.querySelectorAll('.tabNext')
+            let navA = nav.querySelectorAll('a')
+            let navActive = nav.querySelector('span')
 
             // touchstart event
             list.addEventListener('touchstart', function (e) {
@@ -462,7 +525,10 @@
 
             // touchend event
             list.addEventListener('touchend', function () {
+                if (isLoad) return
 
+                list.style.WebkitTransition = list.style.transition = '500ms'
+                cssTransform(list, 'translateX', -width)
             })
 
             function end(disX) {
