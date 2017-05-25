@@ -473,6 +473,8 @@
 
             let startPoint = 0
             let startX = 0
+            let now = 0
+
             // switch
             let isMove = true
             let isFirst = true
@@ -535,6 +537,16 @@
                 isLoad = true
 
                 let destination = disX > 0 ? 0 : -2 * width
+                let direction = disX / Math.abs(disX)
+
+                // tab 导航
+                now += direction
+                if (now < 0) {
+                    now = navA.length - 1
+                }
+                if (now > navA.length -1) {
+                    now = 0
+                }
 
                 list.style.transition = list.style.WebkitTransition = '500ms'
                 cssTransform(list, 'translateX', destination)
@@ -547,10 +559,13 @@
                 list.removeEventListener('webkitTransitionEnd', transEnd)
                 list.removeEventListener('transitionend', transEnd)
 
+                cssTransform(navActive, 'translateX', navA[now].offsetLeft)
+
                 next.forEach(function (node) {
                     node.style.opacity = 1
                 })
 
+                // 模拟 ajax 向后台请求数据
                 setTimeout(function () {
                     next.forEach(function (node) {
                         node.style.opacity = 0
@@ -560,7 +575,7 @@
                     cssTransform(list, 'translateX', -width)
 
                     isLoad = false
-                }, 1000)
+                }, 100)
             }
             
             
